@@ -42,15 +42,18 @@ class WordcountServiceTest {
 
     @Test
     void countExcluded() {
+        //given
+        WordcountService wordcountService = new WordcountServiceImpl();
+
         //when
-        long countExcluded = WordcountServiceImpl.countExcluded(denLilleOle, excludedWords);
+        long countExcluded = wordcountService.countExcluded(denLilleOleString, excludedWordsString);
 
         //then
         assertEquals(4, countExcluded);
     }
 
     @Test
-    void wordCountByWord() {
+    void testWordCountByWord() {
         //when
         Map<Word, WordCount> wordWordCountMap = WordcountServiceImpl.wordCountByWord(denLilleOle, excludedWords);
 
@@ -74,7 +77,7 @@ class WordcountServiceTest {
     }
 
     @Test
-    void testFisk() {
+    void testCreateOutputMap() {
         //given
         WordcountService wordcountService = new WordcountServiceImpl();
 

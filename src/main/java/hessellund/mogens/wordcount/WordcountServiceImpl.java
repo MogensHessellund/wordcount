@@ -34,6 +34,27 @@ public class WordcountServiceImpl implements WordcountService {
         return getOutputMap(filenameCharacter, filenameMap);
     }
 
+    /**
+     * Iterates over a list and count unique instances found in an excluded list. The comparison is case insensitive
+     * @param strings The list of strings to search through
+     * @param excludedStrings List of words that should be excluded
+     * @return count of individual instances
+     */
+    public long countExcluded(List<String> strings, List<String> excludedStrings) {
+        if (excludedStrings == null || excludedStrings.isEmpty()) {
+            return 0;
+        }
+
+        List<Word> words = loadWords(strings);
+        List<Word> excludedWords = loadWords(excludedStrings);
+
+        return words.stream()
+                .filter(excludedWords::contains)
+                .distinct()
+                .count();
+    }
+
+
     static Map<String, String> getOutputMap(String filenameCharacter, Map<String, List<WordByCount>> filenameMap) {
         return IntStream.range(0, filenameCharacter.length())
                 .mapToObj(i -> String.valueOf(filenameCharacter.charAt(i)))
@@ -54,17 +75,6 @@ public class WordcountServiceImpl implements WordcountService {
         return strings.stream()
                 .map(Word::new)
                 .toList();
-    }
-
-    static long countExcluded(List<Word> words, List<Word> excluded) {
-        if (excluded == null || excluded.isEmpty()) {
-            return 0;
-        }
-
-        return words.stream()
-                .filter(excluded::contains)
-                .distinct()
-                .count();
     }
 
     static Map<Word, WordCount> wordCountByWord(List<Word> words, List<Word> excludedWords) {
