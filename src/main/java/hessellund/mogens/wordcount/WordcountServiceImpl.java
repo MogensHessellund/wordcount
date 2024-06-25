@@ -35,7 +35,7 @@ public class WordcountServiceImpl implements WordcountService {
     }
 
     /**
-     * Iterates over a list and count unique instances found in an excluded list. The comparison is case insensitive
+     * Iterates over a list and count unique instances found in an excluded list. The comparison is case-insensitive
      * @param strings The list of strings to search through
      * @param excludedStrings List of words that should be excluded
      * @return count of individual instances
@@ -66,7 +66,7 @@ public class WordcountServiceImpl implements WordcountService {
                             }
                             return filenameMap.get(c).stream()
                                     .map(WordByCount::toString)
-                                    .collect(Collectors.joining("\n"));
+                                    .collect(Collectors.joining("\n", "", "\n"));
                         }
                 ));
     }

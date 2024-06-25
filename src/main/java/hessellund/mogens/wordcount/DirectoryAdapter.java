@@ -62,8 +62,8 @@ public class DirectoryAdapter {
     }
 
     private static List<String> extractWords(List<String> lines) {
-        // Split on non-word characters
-        return lines.stream().map(line -> line.split("\\s+"))
+        return lines.stream()
+                .map(line -> line.split("\\s+"))
                 .flatMap(Arrays::stream)
                 .filter(word -> !word.isEmpty())
                 .map(word -> word.replaceAll("[.,]$", ""))
@@ -77,11 +77,11 @@ public class DirectoryAdapter {
      * @param wordcountFiles map of filenames,String
      */
     public static void writeWordCounts(String dirPathName, String subPath, Map<String, String> wordcountFiles) {
-        for (Map.Entry<String, String> stringStringEntry : wordcountFiles.entrySet()) {
-            Path filepath = Paths.get(dirPathName, subPath, stringStringEntry.getKey());
+        for (Map.Entry<String, String> str : wordcountFiles.entrySet()) {
+            Path filepath = Paths.get(dirPathName, subPath, str.getKey());
 
             try {
-                Files.writeString(filepath, stringStringEntry.getValue());
+                Files.writeString(filepath, str.getValue());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

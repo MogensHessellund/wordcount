@@ -21,19 +21,17 @@ public class WordcountController implements CommandLineRunner {
         Map<String, String> outputMap = wordcountService.createOutputMap(FILENAME_CHARACTER, strings, excluded);
 
         long countExcluded = wordcountService.countExcluded(strings, excluded);
-        outputMap.put("excluded_count", Long.toString(countExcluded));
+        outputMap.put("excluded_count", countExcluded +"\n");
         return outputMap;
     }
 
     @Override
     public void run(String... args) {
-       //String dirPathName = "/home/mogenshessellund/tmp/wordcount";
-
         if (args.length == 0) {
             System.out.println();
             System.out.println("=====================================================================");
             System.out.println();
-            System.out.println("Usage java -jar wordcountapplication.jar path-to-files-to-be-counted");
+            System.out.println("Usage ./gradlew bootRun --args='path-to-files-to-be-counted'");
             System.out.println();
             System.out.println("=====================================================================");
             System.exit(0);
@@ -44,7 +42,6 @@ public class WordcountController implements CommandLineRunner {
         List<String> excludedString = DirectoryAdapter.readStringsFromFile(dirPathName, "excluded");
 
         Map<String, String> wordcountFiles = createWordcountFiles(strings, excludedString);
-
         DirectoryAdapter.writeWordCounts(dirPathName, "out", wordcountFiles);
     }
 
