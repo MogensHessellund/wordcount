@@ -53,6 +53,18 @@ class WordcountServiceTest {
     }
 
     @Test
+    void countExcludedEmpty() {
+        //given
+        WordcountService wordcountService = new WordcountServiceImpl();
+
+        //when
+        long countExcluded = wordcountService.countExcluded(denLilleOleString, List.of());
+
+        //then
+        assertEquals(0, countExcluded);
+    }
+
+    @Test
     void testWordCountByWord() {
         //when
         Map<Word, WordCount> wordWordCountMap = WordcountServiceImpl.wordCountByWord(denLilleOle, excludedWords);
