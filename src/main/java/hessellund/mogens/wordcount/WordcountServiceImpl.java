@@ -23,7 +23,6 @@ public class WordcountServiceImpl implements WordcountService {
     public Map<String, String> createOutputMap(String filenameCharacter,
                                                Collection<String> strings,
                                                Collection<String> excludedStrings) {
-
         List<Word> excludedWords = loadWords(excludedStrings);
         List<Word> words = loadWords(strings);
 
@@ -73,6 +72,7 @@ public class WordcountServiceImpl implements WordcountService {
 
     static List<Word> loadWords(Collection<String> strings) {
         return strings.stream()
+                .filter(w -> !w.isBlank())
                 .map(Word::new)
                 .toList();
     }
@@ -100,7 +100,10 @@ public class WordcountServiceImpl implements WordcountService {
 
 record Word(String word) {
     Word(String word) {
-        this.word = word.toUpperCase();
+        if (word == null || word.isBlank()) {
+            throw new IllegalArgumentException("Word can not be blank");
+        }
+        this.word = word.trim().toUpperCase();
     }
 
     public String getFirstLetter() {

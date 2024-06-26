@@ -2,6 +2,7 @@ package hessellund.mogens.wordcount;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,40 @@ class WordcountServiceTest {
         assertFalse(words.contains(new Word("hammer")));
         assertEquals(words.get(0), words.get(1));
         assertEquals(34, words.size());
+    }
+
+    @Test
+    void loadEmptyWords() {
+        //given
+        List<String> stringList = List.of("I", "en", " ", "" , "kælder", "", " sort", "som ", "kul");
+        //when
+        List<Word> words = WordcountServiceImpl.loadWords(stringList);
+
+        //then
+        List<Word> expectedWordList = List.of(new Word("I"),
+                new Word("EN"),
+                new Word("KÆLDER"),
+                new Word("SORT"),
+                new Word("SOM"),
+                new Word("KUL"));
+        assertTrue(words.containsAll(expectedWordList));
+        assertEquals(expectedWordList.size(), words.size());
+    }
+
+    @Test
+    void createWord() {
+        //when
+        Word hund = new Word("hund");
+
+        //assert
+        assertEquals("HUND", hund.word());
+        assertEquals("H", hund.getFirstLetter());
+    }
+
+    @Test
+    void createEmptyWord() {
+        //assert
+        assertThrowsExactly(IllegalArgumentException.class, () -> new Word(""), "Expecting a RuntimeException when trying to create a Word with an empty string");
     }
 
     @Test
