@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -72,6 +73,7 @@ public class WordcountServiceImpl implements WordcountService {
 
     static List<Word> loadWords(Collection<String> strings) {
         return strings.stream()
+                .filter(Objects::nonNull)
                 .filter(w -> !w.isBlank())
                 .map(Word::new)
                 .toList();

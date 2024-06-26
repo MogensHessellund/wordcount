@@ -2,8 +2,8 @@ package hessellund.mogens.wordcount;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +45,27 @@ class WordcountServiceTest {
     void loadEmptyWords() {
         //given
         List<String> stringList = List.of("I", "en", " ", "" , "kælder", "", " sort", "som ", "kul");
+        //when
+        List<Word> words = WordcountServiceImpl.loadWords(stringList);
+
+        //then
+        List<Word> expectedWordList = List.of(new Word("I"),
+                new Word("EN"),
+                new Word("KÆLDER"),
+                new Word("SORT"),
+                new Word("SOM"),
+                new Word("KUL"));
+        assertTrue(words.containsAll(expectedWordList));
+        assertEquals(expectedWordList.size(), words.size());
+    }
+
+    @Test
+    void loadNullWords() {
+        //given
+        List<String> stringList = new ArrayList<>(List.of("I", "en", " ", "kælder", " sort", "som ", "kul"));
+        stringList.add(1, null);
+        stringList.add(3, null);
+        stringList.add(5, null);
         //when
         List<Word> words = WordcountServiceImpl.loadWords(stringList);
 
